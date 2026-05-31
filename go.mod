@@ -9,4 +9,4 @@
 // in the Go standard library.
 module github.com/salehkreiner/bridge-claude-code
 
-go 1.24
+go 1.26
