@@ -1,0 +1,22 @@
+# Build output
+/dist/
+/bin/
+
+# Compiled binaries that may land at the repo root during local builds.
+# Anchored with a leading slash so they never match the cmd/scrub-* source dirs.
+/scrub-claude
+/scrub-setup
+*.exe
+
+# Test / coverage artifacts
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.bak

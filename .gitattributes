@@ -1,0 +1,4 @@
+# Normalise all text to LF in the repository and on checkout, so shell scripts
+# (install.sh) and Go sources are correct on every platform regardless of the
+# committer's OS.
+* text=auto eol=lf
