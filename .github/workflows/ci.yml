@@ -38,6 +38,19 @@ jobs:
       - name: go vet
         run: go vet ./...
 
+      # The committed Windows resource object is a binary blob. Prove it is exactly
+      # what the manifest + generator produce, so nothing can hide inside it. Runs
+      # once (on Linux) since the .syso is identical on every host.
+      - name: verify embedded manifest is reproducible
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          go generate ./...
+          if ! git diff --exit-code -- cmd/scrub-setup/rsrc_windows_amd64.syso; then
+            echo "rsrc_windows_amd64.syso is out of date — run 'go generate ./...' and commit the result."
+            exit 1
+          fi
+
       - name: build
         run: go build ./...
 

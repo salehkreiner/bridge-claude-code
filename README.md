@@ -214,6 +214,13 @@ directly. Verify the alias with `type claude` (Unix) or `Get-Command claude`
 `PATH` yet. Open a new shell, or add `~/.local/bin` (Unix) /
 `%LOCALAPPDATA%\scrubadubber\bin` (Windows) to `PATH`.
 
+**Windows asks for administrator rights to run `scrub-setup`** — you should not see
+this. `scrub-setup.exe` ships with an embedded manifest declaring `asInvoker`, so it
+runs with your normal user rights and never needs elevation. If a prompt appears, you
+are almost certainly running an old build from before this fix — reinstall the latest
+release. (Background: Windows' UAC "Installer Detection" tries to elevate any
+unmanifested executable whose name contains "setup"; the manifest disables that.)
+
 ---
 
 ## How interception works (the one technical detail)
