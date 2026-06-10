@@ -6,12 +6,19 @@ reaches Anthropic.** It does this with a single, well-documented mechanism: it s
 the `ANTHROPIC_BASE_URL` environment variable, checks that the Hub is reachable, and
 then hands off to your real `claude`. That is the entire program.
 
+The Hub it points at is the **on-device pseudonymization and egress-control layer**:
+it replaces sensitive values with reversible pseudonyms before your traffic leaves
+the machine and re-injects the real values into responses, with the re-identification
+key held locally. Scrubadubber is **free for individuals, enforceable and validated
+for organizations** — this bridge is identical either way; an admin just points it at
+a shared Hub.
+
 What this bridge **does not** do — and you can confirm every line yourself, because
 it has **zero third-party dependencies**:
 
 - It does **not** read, log, store, or modify your prompts, responses, or API keys.
-- It does **not** do any scrubbing, masking, or detection. All of that lives in the
-  Hub (a separate repo). This bridge only changes *where Claude Code sends traffic*.
+- It does **not** do any pseudonymization, masking, or detection. All of that lives in
+  the Hub (a separate repo). This bridge only changes *where Claude Code sends traffic*.
 - It does **not** inject code, hook processes, or install drivers. Interception is
   nothing more than the `ANTHROPIC_BASE_URL` variable that Claude Code already honors.
 - It does **not** phone home. No analytics, no telemetry. The only network call the
@@ -40,8 +47,8 @@ sending your traffic to Anthropic unprotected.
    └──────┬───────┘
           │   POST http://HUB:8383/anthropic/v1/messages   (x-api-key preserved)
           ▼
-   ┌──────────────┐  The Hub is the ONLY place scrubbing happens. It then
-   │ Scrubadubber │  forwards the request upstream.
+   ┌──────────────┐  The Hub is the ONLY place pseudonymization happens. It
+   │ Scrubadubber │  then forwards the request upstream.
    │     Hub      │
    └──────┬───────┘
           │   POST https://api.anthropic.com/v1/messages

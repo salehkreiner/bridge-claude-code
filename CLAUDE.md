@@ -6,9 +6,14 @@ the Scrubadubber Hub before it reaches Anthropic's servers. Engineers can read e
 line of this repo to confirm there is no keylogging, no data exfiltration, and no
 behaviour beyond transparent interception and re-routing.
 
-This is one spoke in the Scrubadubber architecture. The Hub (private repo:
-scrubadubber-hub) does all scrubbing. This bridge does nothing to the data itself —
-it only ensures Claude Code talks to the Hub instead of talking directly to Anthropic.
+This is one spoke in the Scrubadubber architecture. The Hub (repo: scrubadubber-hub)
+is the **on-device pseudonymization and egress-control layer**: it replaces sensitive
+values with reversible pseudonyms before traffic leaves the machine and re-injects the
+real values on the way back, with the re-identification key held locally. This bridge
+does nothing to the data itself — it only ensures Claude Code talks to the Hub instead
+of talking directly to Anthropic. (Scrubadubber is **free for individuals, enforceable
+and validated for organizations**; this bridge is the same for both — an admin just
+points it at a shared Hub.)
 
 ## Strict Scope
 Build ONLY the bridge. Do not re-implement any scrubbing, masking, or detection logic
@@ -116,7 +121,7 @@ Each script:
 ### 7. README.md — the trust document
 This is the most important file in this repo. It must:
 - State clearly in the first paragraph what this software does and does not do
-- Link to the Hub repo for the scrubbing logic
+- Link to the Hub repo for the pseudonymization / egress-control logic
 - Show the complete data flow in plain English (Claude Code → bridge → Hub → Anthropic)
 - Include a "Security" section explaining: no data is stored by the bridge, no
   outbound connections except to the Hub and (via Hub) to Anthropic, no analytics
