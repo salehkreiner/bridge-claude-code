@@ -1,4 +1,4 @@
-// Package config is the single source of truth for the Scrubadubber Hub contract:
+// Package config is the single source of truth for the CipherBond Hub contract:
 // the environment variable names, their defaults, and the small amount of URL
 // derivation both binaries need (the Anthropic proxy base and the control-plane
 // health endpoint).
@@ -23,20 +23,20 @@ import (
 // Environment variables, in the priority order documented in the README.
 const (
 	// EnvHubURL is the canonical Hub base URL variable.
-	EnvHubURL = "SCRUBADUBBER_HUB_URL"
+	EnvHubURL = "CIPHERBOND_HUB_URL"
 	// EnvHubURLFallback is accepted when EnvHubURL is unset, for enterprise
 	// setups that standardise on a bare HUB_URL.
 	EnvHubURLFallback = "HUB_URL"
 	// EnvControlURL fully overrides the derived control-plane health URL, for
 	// topologies where the control plane is not on <hub-host>:8384.
-	EnvControlURL = "SCRUBADUBBER_HUB_CONTROL_URL"
+	EnvControlURL = "CipherBond_HUB_CONTROL_URL"
 	// EnvTimeout is the health-check timeout in milliseconds.
-	EnvTimeout = "SCRUBADUBBER_TIMEOUT"
+	EnvTimeout = "CipherBond_TIMEOUT"
 	// EnvClaudeBin overrides the path to the real claude binary.
 	EnvClaudeBin = "CLAUDE_BIN"
 )
 
-// Hub contract constants. See CLAUDE.md and the live scrubadubber-hub repo.
+// Hub contract constants. See CLAUDE.md and the live CipherBond-hub repo.
 const (
 	// DefaultHubURL is the loopback Hub a lone developer runs locally.
 	DefaultHubURL = "http://127.0.0.1:8383"
@@ -54,7 +54,7 @@ const (
 )
 
 // ResolveHubURL returns the normalised Hub base URL (scheme://host[:port], no
-// trailing slash). Resolution order: SCRUBADUBBER_HUB_URL, then HUB_URL, then the
+// trailing slash). Resolution order: CIPHERBOND_HUB_URL, then HUB_URL, then the
 // loopback default. The value is validated; a malformed URL is a hard error so the
 // bridge fails loudly rather than sending traffic somewhere unexpected.
 func ResolveHubURL() (string, error) {
@@ -76,12 +76,12 @@ func AnthropicBaseURL(hubURL string) string {
 
 // ControlHealthURL derives the control-plane health endpoint to probe.
 //
-//   - If SCRUBADUBBER_HUB_CONTROL_URL is set, it is used verbatim (with /healthz
+//   - If CipherBond_HUB_CONTROL_URL is set, it is used verbatim (with /healthz
 //     appended only when it carries no path of its own).
 //   - Otherwise it is the Hub host on the control port with the /healthz path. The
 //     control port is 8384 for the default proxy port (8383); for a custom proxy
 //     port it is best-effort derived as proxyPort+1, and operators are encouraged
-//     to set SCRUBADUBBER_HUB_CONTROL_URL explicitly for non-standard topologies.
+//     to set CipherBond_HUB_CONTROL_URL explicitly for non-standard topologies.
 func ControlHealthURL(hubURL string) (string, error) {
 	if override := strings.TrimSpace(os.Getenv(EnvControlURL)); override != "" {
 		return normalizeControlURL(override)
@@ -105,7 +105,7 @@ func ControlHealthURL(hubURL string) (string, error) {
 	return fmt.Sprintf("%s://%s:%s%s", u.Scheme, host, controlPort, HealthPath), nil
 }
 
-// Timeout returns the health-check timeout from SCRUBADUBBER_TIMEOUT (milliseconds),
+// Timeout returns the health-check timeout from CipherBond_TIMEOUT (milliseconds),
 // falling back to DefaultTimeout for an unset, non-numeric, or non-positive value.
 func Timeout() time.Duration {
 	raw := strings.TrimSpace(os.Getenv(EnvTimeout))

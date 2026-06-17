@@ -1,7 +1,7 @@
 // Package hubclient performs the one and only network call the bridge ever makes:
-// a health check against the Scrubadubber Hub's control plane.
+// a health check against the CipherBond Hub's control plane.
 //
-// Contract (verified against scrubadubber-hub):
+// Contract (verified against CipherBond-hub):
 //   - The health endpoint is GET /healthz on the control-plane port (8384).
 //   - A healthy Hub responds 200 with body {"status":"ok"}.
 //   - There is NO health endpoint on the proxy port (8383); do not probe it.

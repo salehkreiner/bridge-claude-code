@@ -1,4 +1,4 @@
-# Scrubadubber bridge installer (Windows).
+# cipherbond bridge installer (Windows).
 #
 #   irm https://raw.githubusercontent.com/salehkreiner/bridge-claude-code/main/install.ps1 | iex
 #
@@ -7,21 +7,21 @@
 # runs scrub-setup once. It does nothing else.
 #
 # Environment overrides:
-#   SCRUBADUBBER_INSTALL_DIR   where to install   (default: %LOCALAPPDATA%\scrubadubber\bin)
-#   SCRUBADUBBER_VERSION       release tag to get (default: latest)
-#   SCRUBADUBBER_HUB_URL       Hub URL passed through to scrub-setup
+#   CipherBond_INSTALL_DIR   where to install   (default: %LOCALAPPDATA%\CipherBond\bin)
+#   CipherBond_VERSION       release tag to get (default: latest)
+#   CIPHERBOND_HUB_URL       Hub URL passed through to scrub-setup
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $repo = 'salehkreiner/bridge-claude-code'
 
-$installDir = if ($env:SCRUBADUBBER_INSTALL_DIR) {
-    $env:SCRUBADUBBER_INSTALL_DIR
+$installDir = if ($env:CipherBond_INSTALL_DIR) {
+    $env:CipherBond_INSTALL_DIR
 } else {
-    Join-Path $env:LOCALAPPDATA 'scrubadubber\bin'
+    Join-Path $env:LOCALAPPDATA 'CipherBond\bin'
 }
-$version = if ($env:SCRUBADUBBER_VERSION) { $env:SCRUBADUBBER_VERSION } else { 'latest' }
+$version = if ($env:CipherBond_VERSION) { $env:CipherBond_VERSION } else { 'latest' }
 
 # Only windows/amd64 is published in the release matrix.
 $arch = 'amd64'
@@ -33,7 +33,7 @@ $base = if ($version -eq 'latest') {
     "https://github.com/$repo/releases/download/$version"
 }
 
-Write-Host "Installing the Scrubadubber bridge ($suffix) into $installDir"
+Write-Host "Installing the cipherbond bridge ($suffix) into $installDir"
 New-Item -ItemType Directory -Force -Path $installDir | Out-Null
 
 # --- optional checksum verification -----------------------------------------
@@ -86,7 +86,7 @@ Write-Host ""
 Write-Host "Running scrub-setup..."
 $setup = Join-Path $installDir 'scrub-setup.exe'
 $setupArgs = @('--yes')
-if ($env:SCRUBADUBBER_HUB_URL) { $setupArgs += @('--hub-url', $env:SCRUBADUBBER_HUB_URL) }
+if ($env:CIPHERBOND_HUB_URL) { $setupArgs += @('--hub-url', $env:CIPHERBOND_HUB_URL) }
 & $setup @setupArgs
 
 Write-Host ""

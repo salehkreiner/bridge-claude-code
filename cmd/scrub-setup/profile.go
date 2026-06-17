@@ -22,8 +22,8 @@ const (
 // supported shell ('#' works for bash, zsh, fish, and PowerShell), so re-running
 // setup can find and replace exactly its own block and nothing else.
 const (
-	markerBegin = "# >>> scrubadubber bridge >>>"
-	markerEnd   = "# <<< scrubadubber bridge <<<"
+	markerBegin = "# >>> cipherbond bridge >>>"
+	markerEnd   = "# <<< cipherbond bridge <<<"
 )
 
 // parseShell validates a --shell value.
@@ -117,7 +117,7 @@ func renderBlock(sh Shell, hubURL string, aliasClaude bool) string {
 		if aliasClaude {
 			lines = append(lines, "function claude { scrub-claude @args }")
 		}
-	default: // Bash, Zsh — POSIX syntax
+	default: // Bash, Zsh â€” POSIX syntax
 		lines = append(lines, fmt.Sprintf("export %s=%q", config.EnvHubURL, hubURL))
 		if aliasClaude {
 			lines = append(lines, "alias claude='scrub-claude'")
